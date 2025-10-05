@@ -1,6 +1,12 @@
 spring:
   application:
     name: ai-code-mother-backend
+  #mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/my_ai_coding?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 10280017
 server:
   port: 8123
   servlet:
