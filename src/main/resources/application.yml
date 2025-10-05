@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: ai-code-mother-backend
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+# springdoc-openapi
+springdoc:
+  group-configs:
+    - group: 'default'
+      packages-to-scan: com.example.aicodemother.controller
