@@ -11,8 +11,25 @@ server:
   port: 8123
   servlet:
     context-path: /api
+langchain4j:
+  community:
+    dashscope:
+      # 普通的 Chat 模型配置
+      chat-model:
+        api-key: ${DASHSCOPE_API_KEY}
+        model-name: deepseek-v3
+        max-tokens: 8192
+      # 流式 Chat 模型配置
+      streaming-chat-model:
+        chat-model:
+          api-key: ${DASHSCOPE_API_KEY}
+          model-name: deepseek-v3
+          max-tokens: 8192
+          stream: true  # 启用流式处理
+
 # springdoc-openapi
 springdoc:
   group-configs:
     - group: 'default'
       packages-to-scan: com.example.aicodemother.controller
+
