@@ -23,7 +23,7 @@ class AiCodeGeneratorFacadeTest {
     @Test
     void generate() {
 
-        File file = aiCodeGeneratorFacade.generateAndSaveCode("帮我生成注册网站，代码控制在20行", CodeGenTypeEnum.HTML);
+        File file = aiCodeGeneratorFacade.generateAndSaveCode("帮我生成注册网站，代码控制在20行", CodeGenTypeEnum.MULTI_FILE,100L);
         ThrowUtils.throwIf(file == null, ErrorCode.SYSTEM_ERROR, "生成代码失败");
         System.out.println(file.getAbsolutePath());
 
@@ -33,7 +33,7 @@ class AiCodeGeneratorFacadeTest {
     @Test
     void generateAndSaveCode() {
 
-        Flux<String> stringFlux = aiCodeGeneratorFacade.generateAndSaveCodeStream("帮我生成注册网站，代码控制在20行", CodeGenTypeEnum.MULTI_FILE);
+        Flux<String> stringFlux = aiCodeGeneratorFacade.generateAndSaveCodeStream("帮我生成注册网站，代码控制在20行", CodeGenTypeEnum.MULTI_FILE,1000L);
         List<String> block = stringFlux.collectList().block();
         Assertions.assertNotNull(block);
         String resul = String.join("", block);

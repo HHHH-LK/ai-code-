@@ -1,4 +1,4 @@
-package com.example.aicodemother.model.dto;
+package com.example.aicodemother.model.dto.user;
 
 import com.example.aicodemother.common.PageRequest;
 import lombok.Data;

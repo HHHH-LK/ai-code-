@@ -2,8 +2,6 @@ package com.example.aicodemother.core.filesaver;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
-import com.example.aicodemother.agent.model.HtmlCodeResult;
-import com.example.aicodemother.agent.model.MultiFileCodeResult;
 import com.example.aicodemother.exception.BusinessException;
 import com.example.aicodemother.exception.ErrorCode;
 import com.example.aicodemother.model.enums.CodeGenTypeEnum;
@@ -22,11 +20,11 @@ public abstract class CodeFileSaverTemplate<T> {
     public static final String FILE_SAVE_ROOT_PATH = System.getProperty("user.dir") + "/tmp/code_output";
 
     //流程模版
-    public final File saveCode(T result) {
+    public final File saveCode(T result,Long appId) {
         //校验参数
         checkParamIsTure(result);
         //构建唯一路径
-        String createFilePath = buildUniquePath(result);
+        String createFilePath = buildUniquePath(result,appId);
         //写入文件
         String finallyCodingPath = writeToFile(result, createFilePath);
 
@@ -35,10 +33,10 @@ public abstract class CodeFileSaverTemplate<T> {
 
     protected abstract String writeToFile(T result, String createFilePath);
 
-    private String buildUniquePath(T result) {
+    private String buildUniquePath(T result, Long appId) {
         CodeGenTypeEnum resultType = getResultType(result);
         String codeTypeValue = resultType.getValue();
-        String uniqueFileDirName = FILE_SAVE_ROOT_PATH + File.separator + codeTypeValue + "_" + IdUtil.getSnowflakeNextIdStr();
+        String uniqueFileDirName = FILE_SAVE_ROOT_PATH + File.separator + codeTypeValue + "_" + appId;
         FileUtil.mkdir(uniqueFileDirName);
         return uniqueFileDirName;
     }
