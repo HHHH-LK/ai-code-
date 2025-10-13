@@ -2,7 +2,9 @@ package com.example.aicodemother.agent;
 
 import com.example.aicodemother.agent.model.HtmlCodeResult;
 import com.example.aicodemother.agent.model.MultiFileCodeResult;
+import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
 import reactor.core.publisher.Flux;
 
 public interface AiCodeGeneratorService {

@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import com.example.aicodemother.agent.model.HtmlCodeResult;
 import com.example.aicodemother.agent.model.MultiFileCodeResult;
+import com.example.aicodemother.constant.AppConstant;
 import com.example.aicodemother.model.enums.CodeGenTypeEnum;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class CodeFileSaver {
 
     //设置根目录
-    public static final String FILE_SAVE_ROOT_PATH = System.getProperty("user.dir") + "/tmp/code_output";
+    public static final String FILE_SAVE_ROOT_PATH = AppConstant.CODE_OUTPUT_ROOT_DIR;
 
     /**
      * 构建并创建唯一的文件目录路径

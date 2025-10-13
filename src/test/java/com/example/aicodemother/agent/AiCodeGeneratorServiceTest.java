@@ -23,9 +23,8 @@ class AiCodeGeneratorServiceTest {
     }
 
     @Test
-    void generateMultiFileCode() {
-
-
+    void testChatMemory() {
 
     }
+
 }
