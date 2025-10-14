@@ -1,7 +1,7 @@
 package com.example.aicodemother.core.filesaver;
 
-import com.example.aicodemother.agent.model.HtmlCodeResult;
-import com.example.aicodemother.agent.model.MultiFileCodeResult;
+import com.example.aicodemother.ai.model.HtmlCodeResult;
+import com.example.aicodemother.ai.model.MultiFileCodeResult;
 import com.example.aicodemother.exception.BusinessException;
 import com.example.aicodemother.exception.ErrorCode;
 import com.example.aicodemother.model.enums.CodeGenTypeEnum;

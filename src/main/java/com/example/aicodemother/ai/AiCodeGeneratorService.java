@@ -1,10 +1,9 @@
-package com.example.aicodemother.agent;
+package com.example.aicodemother.ai;
 
-import com.example.aicodemother.agent.model.HtmlCodeResult;
-import com.example.aicodemother.agent.model.MultiFileCodeResult;
+import com.example.aicodemother.ai.model.HtmlCodeResult;
+import com.example.aicodemother.ai.model.MultiFileCodeResult;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
-import dev.langchain4j.service.UserMessage;
 import reactor.core.publisher.Flux;
 
 public interface AiCodeGeneratorService {
@@ -43,6 +42,10 @@ public interface AiCodeGeneratorService {
      */
     @SystemMessage(fromResource = "prompt/codegen-multi-file-system-prompt.txt")
     Flux<String> generateMultiFileCodeStream(String userMessage);
+
+
+    @SystemMessage(fromResource = "prompt/codegen-vue-system-prompt.txt")
+    Flux<String> generateVueCodeStream(String userMessage, @MemoryId String appId);
 
 
 }

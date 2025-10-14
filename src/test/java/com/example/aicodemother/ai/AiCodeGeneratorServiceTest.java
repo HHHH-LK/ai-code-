@@ -1,12 +1,10 @@
-package com.example.aicodemother.agent;
+package com.example.aicodemother.ai;
 
-import com.example.aicodemother.agent.model.HtmlCodeResult;
+import com.example.aicodemother.ai.model.HtmlCodeResult;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest

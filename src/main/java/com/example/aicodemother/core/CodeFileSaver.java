@@ -2,8 +2,8 @@ package com.example.aicodemother.core;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
-import com.example.aicodemother.agent.model.HtmlCodeResult;
-import com.example.aicodemother.agent.model.MultiFileCodeResult;
+import com.example.aicodemother.ai.model.HtmlCodeResult;
+import com.example.aicodemother.ai.model.MultiFileCodeResult;
 import com.example.aicodemother.constant.AppConstant;
 import com.example.aicodemother.model.enums.CodeGenTypeEnum;
 

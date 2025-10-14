@@ -1,6 +1,6 @@
 package com.example.aicodemother.core.filesaver;
 
-import com.example.aicodemother.agent.model.HtmlCodeResult;
+import com.example.aicodemother.ai.model.HtmlCodeResult;
 import com.example.aicodemother.model.enums.CodeGenTypeEnum;
 
 

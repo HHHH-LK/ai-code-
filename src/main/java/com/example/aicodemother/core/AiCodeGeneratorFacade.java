@@ -1,9 +1,9 @@
 package com.example.aicodemother.core;
 
-import com.example.aicodemother.agent.AiCodeGeneratorService;
-import com.example.aicodemother.agent.AiCodeGeneratorServiceFactory;
-import com.example.aicodemother.agent.model.HtmlCodeResult;
-import com.example.aicodemother.agent.model.MultiFileCodeResult;
+import com.example.aicodemother.ai.AiCodeGeneratorService;
+import com.example.aicodemother.ai.AiCodeGeneratorServiceFactory;
+import com.example.aicodemother.ai.model.HtmlCodeResult;
+import com.example.aicodemother.ai.model.MultiFileCodeResult;
 import com.example.aicodemother.core.filesaver.CodeFileSaverExecutor;
 import com.example.aicodemother.core.parser.CodeParserExecutor;
 import com.example.aicodemother.exception.BusinessException;
