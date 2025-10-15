@@ -8,18 +8,23 @@ import com.example.aicodemother.ai.model.message.AiResponseMessage;
 import com.example.aicodemother.ai.model.message.StreamMessage;
 import com.example.aicodemother.ai.model.message.ToolExecutedMessage;
 import com.example.aicodemother.ai.model.message.ToolRequestMessage;
+import com.example.aicodemother.core.builder.VueProjectBuilder;
 import com.example.aicodemother.exception.ErrorCode;
 import com.example.aicodemother.exception.ThrowUtils;
 import com.example.aicodemother.model.entity.User;
 import com.example.aicodemother.model.enums.ChatHistoryMessageTypeEnum;
 import com.example.aicodemother.model.enums.StreamMessageTypeEnum;
 import com.example.aicodemother.service.ChatHistoryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.example.aicodemother.constant.AppConstant.CODE_OUTPUT_ROOT_DIR;
 
 /**
  * JSON 消息流处理器
@@ -27,7 +32,10 @@ import java.util.Set;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ComplexJsonStreamHandler implements Handler {
+
+    private final VueProjectBuilder vueProjectBuilder;
 
     /**
      * 处理 TokenStream（VUE_PROJECT）
@@ -55,6 +63,10 @@ public class ComplexJsonStreamHandler implements Handler {
                     // 流式响应完成后，添加 AI 消息到对话历史
                     String aiResponse = chatHistoryStringBuilder.toString();
                     chatHistoryService.addChatMessage(appId, aiResponse, ChatHistoryMessageTypeEnum.AI.getValue(), loginUser);
+                    // 构建Vue项目
+                    String projectPath = "vue_project_" + appId;
+                    String buildPath = CODE_OUTPUT_ROOT_DIR + File.separator + projectPath;
+                    vueProjectBuilder.buildProjectAsync(buildPath);
                 })
                 .doOnError(error -> {
                     // 如果AI回复失败，也要记录错误消息
