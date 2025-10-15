@@ -1,4 +1,4 @@
-package com.example.aicodemother.model.entity;
+package com.example.aicodemother.ai.model;
 
 import com.example.aicodemother.ai.createcodingagent.tools.Tool;
 import lombok.Data;

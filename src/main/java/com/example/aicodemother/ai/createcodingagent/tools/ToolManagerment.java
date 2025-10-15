@@ -2,7 +2,7 @@ package com.example.aicodemother.ai.createcodingagent.tools;
 
 import com.example.aicodemother.exception.ErrorCode;
 import com.example.aicodemother.exception.ThrowUtils;
-import com.example.aicodemother.model.entity.ToolInfo;
+import com.example.aicodemother.ai.model.ToolInfo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

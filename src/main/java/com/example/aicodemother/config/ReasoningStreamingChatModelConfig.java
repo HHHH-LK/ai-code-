@@ -24,6 +24,9 @@ public class ReasoningStreamingChatModelConfig {
                 .apiKey(System.getenv("DASHSCOPE_API_KEY"))
                 .modelName("deepseek-r1")
                 .maxTokens(32768)
+                // 增加超时时间（推理模型需要更长时间）
+                // 启用增量输出
+                .enableSearch(false)
                 .build();
     }
 

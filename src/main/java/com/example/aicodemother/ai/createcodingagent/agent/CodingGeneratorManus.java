@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  **/
 
 @Component
-public class CodingGeneratorManus extends ToolCallAgent {
+public class  CodingGeneratorManus extends ToolCallAgent {
 
     public CodingGeneratorManus(ChatModel chatModel) {
         this.setName("codingGenerator");

@@ -2,7 +2,7 @@ package com.example.aicodemother.ai.createcodingagent.agent;
 
 import com.example.aicodemother.ai.createcodingagent.tools.Tool;
 import com.example.aicodemother.ai.createcodingagent.tools.ToolManagerment;
-import com.example.aicodemother.model.entity.ToolInfo;
+import com.example.aicodemother.ai.model.ToolInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatModel;

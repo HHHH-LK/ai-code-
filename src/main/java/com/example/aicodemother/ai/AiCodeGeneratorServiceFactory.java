@@ -59,8 +59,10 @@ public class AiCodeGeneratorServiceFactory {
 
     @Bean
     public StreamingChatModel streamingChatModel() {
-        return QwenStreamingChatModel.builder().apiKey(System.getenv("DASHSCOPE_API_KEY"))
+        return QwenStreamingChatModel.builder()
+                .apiKey(System.getenv("DASHSCOPE_API_KEY"))
                 .modelName("deepseek-v3")
+
                 .build();
     }
 

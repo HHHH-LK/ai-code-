@@ -1,14 +1,22 @@
 package com.example.aicodemother.core;
 
+import cn.hutool.json.JSONUtil;
 import com.example.aicodemother.ai.AiCodeGeneratorService;
 import com.example.aicodemother.ai.AiCodeGeneratorServiceFactory;
 import com.example.aicodemother.ai.model.HtmlCodeResult;
 import com.example.aicodemother.ai.model.MultiFileCodeResult;
+import com.example.aicodemother.ai.model.message.AiResponseMessage;
+import com.example.aicodemother.ai.model.message.ToolExecutedMessage;
+import com.example.aicodemother.ai.model.message.ToolRequestMessage;
 import com.example.aicodemother.core.filesaver.CodeFileSaverExecutor;
 import com.example.aicodemother.core.parser.CodeParserExecutor;
 import com.example.aicodemother.exception.BusinessException;
 import com.example.aicodemother.exception.ErrorCode;
 import com.example.aicodemother.model.enums.CodeGenTypeEnum;
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.service.TokenStream;
+import dev.langchain4j.service.tool.BeforeToolExecution;
+import dev.langchain4j.service.tool.ToolExecution;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,7 +56,6 @@ public class AiCodeGeneratorFacade {
 
     }
 
-
     /**
      * 生成并保存代码的方法
      * 根据不同的代码生成类型，调用相应的生成服务并保存结果
@@ -81,8 +88,78 @@ public class AiCodeGeneratorFacade {
 
             case MULTI_FILE -> generateAndSaveMultiFileCodeStream(userMessage, appId);
 
+            case VUE_PROJECT -> generateAndSaveVueProjectStream(userMessage, appId);
+
             default -> throw new BusinessException(ErrorCode.PARAMS_ERROR, "不支持的代码生成类型");
         };
+    }
+
+
+    private Flux<String> generateAndSaveVueProjectStream(String userMessage, Long appId) {
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId, CodeGenTypeEnum.VUE_PROJECT);
+        TokenStream tokenStream = aiCodeGeneratorService.generateVueCodeStream(userMessage, appId);
+        return processTokenStream(tokenStream);
+    }
+
+    /**
+     * 将 TokenStream 转换为 Flux<String>，并传递工具调用信息
+     *
+     * @param tokenStream TokenStream 对象
+     * @return Flux<String> 流式响应
+     */
+    private Flux<String> processTokenStream(TokenStream tokenStream) {
+        return Flux.create(sink -> {
+            try {
+                tokenStream.onPartialResponse((String partialResponse) -> {
+                            // 处理 AI 的部分响应（文本内容）
+                            try {
+                                AiResponseMessage aiResponseMessage = new AiResponseMessage(partialResponse);
+                                sink.next(JSONUtil.toJsonStr(aiResponseMessage));
+                            } catch (Exception e) {
+                                log.error("处理部分响应时出错: {}", partialResponse, e);
+                            }
+                        })
+                        .beforeToolExecution((BeforeToolExecution beforeToolExecution) -> {
+                            // 处理工具调用请求（在工具执行前）
+                            try {
+                                ToolRequestMessage toolRequestMessage = new ToolRequestMessage(beforeToolExecution.request());
+                                sink.next(JSONUtil.toJsonStr(toolRequestMessage));
+                                log.info("即将执行工具: {}, 参数: {}",
+                                        beforeToolExecution.request().name(),
+                                        beforeToolExecution.request().arguments());
+                            } catch (Exception e) {
+                                log.error("处理工具执行前回调时出错", e);
+                            }
+                        })
+                        .onToolExecuted((ToolExecution toolExecution) -> {
+                            // 处理工具执行结果（在工具执行后）
+                            try {
+                                ToolExecutedMessage toolExecutedMessage = new ToolExecutedMessage(toolExecution);
+                                sink.next(JSONUtil.toJsonStr(toolExecutedMessage));
+                                log.info("工具执行完成: {}, 结果: {}",
+                                        toolExecution.request().name(),
+                                        toolExecution.result());
+                            } catch (Exception e) {
+                                log.error("处理工具执行结果时出错", e);
+                            }
+                        })
+                        .onCompleteResponse((ChatResponse response) -> {
+                            // 流式响应完成
+                            log.info("Vue项目代码生成完成，响应: {}", response);
+                            sink.complete();
+                        })
+                        .onError((Throwable error) -> {
+                            // 处理错误
+                            String errorMessage = String.format("Vue项目代码生成出错: %s", error.getMessage());
+                            log.error(errorMessage, error);
+                            sink.error(new BusinessException(ErrorCode.SYSTEM_ERROR, errorMessage));
+                        })
+                        .start();
+            } catch (Exception e) {
+                log.error("启动 TokenStream 时出错", e);
+                sink.error(new BusinessException(ErrorCode.SYSTEM_ERROR, e.getMessage()));
+            }
+        });
     }
 
     /**
